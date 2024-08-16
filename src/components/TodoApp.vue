@@ -4,9 +4,9 @@ import { ref, computed } from 'vue';
 let id = 0;
 const newTodo = ref('');
 const status = {
-  'all': 'All',
-  'active': 'Active',
-  'completed': 'Completed'
+  all: 'All',
+  active: 'Active',
+  completed: 'Completed',
 };
 const currentStatus = ref(status.all);
 const editId = ref(null);
@@ -21,26 +21,26 @@ const addTodo = () => {
   if (newTodo.value.trim() === '') return;
   todos.value.push({ id: id++, text: newTodo.value, done: false });
   newTodo.value = '';
-}
+};
 
-const removeTodo = (todo) => {
-  todos.value = todos.value.filter(t => t !== todo);
-}
+const removeTodo = (id) => {
+  todos.value = todos.value.filter((todo) => todo.id !== id);
+};
 
 const editTodo = (todo) => {
   editId.value = todo.id;
-}
+};
 
 const saveEdit = (index) => {
-  if(todos.value[index].text.trim() === '') {
+  if (todos.value[index].text.trim() === '') {
     return;
   }
   todos.value[index] = { ...todos.value[index], text: todos.value[index].text };
   editId.value = null;
-}
+};
 
 const filteredTodos = computed(() => {
-  if(currentStatus.value === status.active) {
+  if (currentStatus.value === status.active) {
     return todos.value.filter((todo) => !todo.done);
   } else if (currentStatus.value === status.completed) {
     return todos.value.filter((todo) => todo.done);
@@ -85,7 +85,7 @@ const setFilter = (filterStatus) => {
                 alt="pencil"
               />
             </button>
-            <button class="todo-remove" @click="removeTodo(todo)">
+            <button class="todo-remove" @click="removeTodo(todo.id)">
               <img
                 src="https://static.vecteezy.com/system/resources/previews/037/752/223/non_2x/trash-icon-for-web-app-uiux-infographic-etc-vector.jpg"
                 alt="trash"
@@ -95,9 +95,23 @@ const setFilter = (filterStatus) => {
         </ul>
         <div class="todo-footing" v-if="todos.length > 0">
           <ul class="footing-lits">
-            <li class="footing-item" :class="{ selected: currentStatus === status.all }" @click="setFilter(status.all)">{{ status.all }}</li>
-            <li class="footing-item" :class="{ selected: currentStatus === status.active }" @click="setFilter(status.active)">{{ status.active }}</li>
-            <li class="footing-item" :class="{ selected: currentStatus === status.completed }" @click="setFilter(status.completed)">{{ status.completed }}</li>
+            <li class="footing-item" :class="{ selected: currentStatus === status.all }" @click="setFilter(status.all)">
+              {{ status.all }}
+            </li>
+            <li
+              class="footing-item"
+              :class="{ selected: currentStatus === status.active }"
+              @click="setFilter(status.active)"
+            >
+              {{ status.active }}
+            </li>
+            <li
+              class="footing-item"
+              :class="{ selected: currentStatus === status.completed }"
+              @click="setFilter(status.completed)"
+            >
+              {{ status.completed }}
+            </li>
           </ul>
         </div>
       </div>
