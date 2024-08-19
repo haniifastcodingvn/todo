@@ -22,3 +22,9 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+App features:
++ Add a new todo
++ Edit a todo
++ Delete any todo
++ Filter todos by completed, in progress, or show all todos
